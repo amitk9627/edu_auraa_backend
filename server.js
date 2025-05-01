@@ -9,6 +9,7 @@ const facultyRoute = require("./src/routes/faculty");
 const instituteRoute = require("./src/routes/institute");
 const courseRoute = require("./src/routes/courses");
 const batchRoute = require("./src/routes/batches");
+const userRoute = require("./src/routes/user");
 
 // Creating express object
 const app = express();
@@ -49,3 +50,4 @@ mongoose
   app.use("/app/v1/institute", instituteRoute);
   app.use("/app/v1/courses", courseRoute);
   app.use("/app/v1/batches", batchRoute);
+  app.use("/app/v1/user", userRoute);
