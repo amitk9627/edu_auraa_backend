@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+  instituteId: { type: String, default: "" },
   userID: { type: String, required: true, unique: true },
   firstName: { type: String, required: true },
   lastName: { type: String, default: "" },

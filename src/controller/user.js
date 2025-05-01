@@ -1,3 +1,4 @@
+const institute = require('../model/institute');
 const UserModel = require('../model/user');
 const { checkRequiredField } = require('../utils/checkRequiredField');
 const mailSender = require('../utils/mailSender');
@@ -66,11 +67,12 @@ const createUser = async (req, res) => {
           console.log(
             " - /app/v1/user/createUser - user not exist creating..."
           );
-          const countryCode = data.countryName.toUpperCase().substring(0, 3);
-          
+
+          let instituteId = `INS${Date.now()}`;
           let userID = `USIN${Date.now()}`;
           let query = {
             userID: userID,
+            instituteId: instituteId,
             firstName: data.firstName,
             gender: data?.gender,
             contact: data.contact,
@@ -85,6 +87,17 @@ const createUser = async (req, res) => {
               otpExpiry: null,
             },
           };
+
+          if(data.userType === "INSTITUTE"){
+            const instituteQuery = {
+              email: data.email,
+              contact: data.contact,
+              instituteId: instituteId,
+              instituteName: data.firstName
+            }
+            const newInstitute = new institute(instituteQuery);
+            await newInstitute.save();
+          }
     
           await UserModel
             .create(query)
@@ -102,7 +115,8 @@ const createUser = async (req, res) => {
                 name: response.firstName,
                 number: response.contact,
                 email: response.email,
-                gender: response.gender
+                gender: response.gender,
+                instituteId: response.instituteId
               });
             })
             .catch((err) => {
@@ -164,6 +178,7 @@ const loginViaEmail = async (req, res) => {
             otpExpiry: expiry,
           },
         };
+        
   
         await UserModel
           .findOneAndUpdate(query, docToUpdate)
@@ -182,7 +197,7 @@ const loginViaEmail = async (req, res) => {
             return res.status(200).json({ userAssociated: true, otpUpdated: false });
           });
   
-        let subject = "Team WTi - One Time Password";
+        let subject = "Team Eduauraa - One Time Password";
         let html = `
             <!DOCTYPE html>
             <html>
