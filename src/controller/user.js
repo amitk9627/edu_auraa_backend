@@ -68,7 +68,7 @@ const createUser = async (req, res) => {
             " - /app/v1/user/createUser - user not exist creating..."
           );
 
-          let instituteId = `INS${Date.now()}`;
+          let instituteId = data.userType === "INSTITUTE" ? `INS${Date.now()}` : "";
           let userID = `USIN${Date.now()}`;
           let query = {
             userID: userID,
