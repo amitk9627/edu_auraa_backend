@@ -17,9 +17,6 @@ const app = express();
 // Port Number
 const PORT = process.env.PORT || 5000;
 
-// Server Setup
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
-
 app.use(bodyParser.json());
   
 // allowing all origins
@@ -50,4 +47,7 @@ mongoose
   app.use("/app/v1/institute", instituteRoute);
   app.use("/app/v1/courses", courseRoute);
   app.use("/app/v1/batches", batchRoute);
-  app.use("/app/v1/user", userRoute);
+  app.use("/app/v1/users",userRoute)
+
+
+  app.listen(PORT, console.log(`Server started on port ${PORT}`));
