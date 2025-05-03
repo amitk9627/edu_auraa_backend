@@ -14,7 +14,7 @@ async function mailSender(email, subject, html) {
 
 
     const info = await transporter.sendMail({
-        from: `"Team WTi" <${process.env.MAIL}>`,
+        from: `"Team Eduauraa" <${process.env.MAIL}>`,
         to: `${email}`,
         cc: `${process.env.CC_MAIL}`, 
         // bcc: `${bcc}`, 
