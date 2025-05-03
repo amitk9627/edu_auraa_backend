@@ -152,7 +152,7 @@ const loginViaEmail = async (req, res) => {
     try {
        
       let data = req.body;
-      if(!data.email){
+      if(!data.userCred){
         console.log(
           " - /app/v1/user/otp/loginViaEmail - Missing required email ",
         );
@@ -162,11 +162,13 @@ const loginViaEmail = async (req, res) => {
         });
       }
   
-      const query = {
-        email: data.email.toLowerCase(),
-      };
+      const query = [{email: data.userCred}, {contact: data.userCred}];
+
+      console.log('query', query)
   
-      let findCred = await UserModel.findOne(query);
+      let findCred = await UserModel.findOne({$or: query});
+
+      console.log(findCred)
   
       if (findCred) {
         let otp = otpGenerator();
@@ -181,18 +183,18 @@ const loginViaEmail = async (req, res) => {
         
   
         await UserModel
-          .findOneAndUpdate(query, docToUpdate)
+          .findOneAndUpdate({email: findCred.email}, docToUpdate)
           .then(() => {
             console.log(
               " - /app/v1/user/loginViaEmail - user exists and otp updated",
-              data.email
+              data.userCred
             );
             res.status(200).json({ userAssociated: true, otpUpdated: true });
           })
           .catch((err) => {
             console.log(
               " - /app/v1/user/loginViaEmail - user exists and unable to update otp",
-              data.email
+              data.userCred
             );
             return res.status(200).json({ userAssociated: true, otpUpdated: false });
           });
@@ -202,7 +204,7 @@ const loginViaEmail = async (req, res) => {
             <!DOCTYPE html>
             <html>
             <body>
-            <p>Hi ${data.email},</p>
+            <p>Hi ${findCred.firstName},</p>
             <br>
             <p>There was a request for OTP</p>
             <p>If you did not make the request, then please ignore the email.</p>
@@ -216,7 +218,7 @@ const loginViaEmail = async (req, res) => {
             </html>
             `;
   
-        await mailSender(data.email.toLowerCase(), subject, html, "otp")
+        await mailSender(findCred.email.toLowerCase(), subject, html, "otp")
           .then(() => {
             console.log("otp sent");
           })
@@ -226,7 +228,7 @@ const loginViaEmail = async (req, res) => {
       } else {
         console.log(
           " - /app/v1/user/loginViaEmail - user not found",
-          data.email
+          data.userCred
         );
         return res.status(404).json({ userAssociated: false, otpUpdated: false, result: "User not found" });
       }
