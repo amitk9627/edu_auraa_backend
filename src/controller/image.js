@@ -56,5 +56,21 @@ const getImage = async (req, res) => {
     }
   };
 
+  const deleteImage = async (req, res) => {
+    try {
+      const { id } = req.params;
   
-module.exports = { uploadImage, getImage };
+      const deletedImage = await ImageModel.findByIdAndDelete(id);
+  
+      if (!deletedImage) {
+        return res.status(404).json({ success: false, message: "Image not found" });
+      }
+  
+      res.json({ success: true, message: "Image deleted successfully" });
+    } catch (err) {
+      console.error("Delete error:", err);
+      res.status(500).json({ success: false, message: err.message });
+    }
+  };
+  
+module.exports = { uploadImage, getImage, deleteImage };
