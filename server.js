@@ -10,6 +10,7 @@ const instituteRoute = require("./src/routes/institute");
 const courseRoute = require("./src/routes/courses");
 const batchRoute = require("./src/routes/batches");
 const userRoute = require("./src/routes/user");
+const imageRoute = require("./src/routes/image");
 
 // Creating express object
 const app = express();
@@ -48,6 +49,7 @@ mongoose
   app.use("/app/v1/courses", courseRoute);
   app.use("/app/v1/batches", batchRoute);
   app.use("/app/v1/users",userRoute)
+  app.use("/app/v1/image",imageRoute)
 
 
   app.listen(PORT, console.log(`Server started on port ${PORT}`));
