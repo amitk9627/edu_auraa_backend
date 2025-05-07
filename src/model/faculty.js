@@ -7,7 +7,7 @@ const facultySchema = new mongoose.Schema({
   experience: { type: Number, required: true },
   aboutFaculty: { type: String },
   profile: { type: String }, // Assume this is a URL or base64 string
-  linkedCourses: [{ type: Array }] // Array of course IDs or names
+  linkedCourses: { type: Array } // Array of course IDs or names
 }, {timestamps: true});
 
 module.exports = mongoose.model('faculty', facultySchema);
