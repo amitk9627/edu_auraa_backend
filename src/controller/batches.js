@@ -9,7 +9,8 @@ const addUpdateBatch = async (req, res) => {
       "instituteId",
       "batchName",
       "startDate",
-      "endDate",
+      "endDate", 
+      "mode", 
       "daysOfClasses",
       "timeSlot",
     ];
