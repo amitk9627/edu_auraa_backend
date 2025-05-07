@@ -31,7 +31,6 @@ const addUpdateCourse = async (req, res) => {
         "instituteId",
         "courseName",
         "examType",
-        "mode",
         "duration",
         ];
         const { isValid, missingField } = await checkRequiredField(data, requiredFields);
